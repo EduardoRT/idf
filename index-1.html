@@ -1,0 +1,81 @@
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"/><title>Unknown </title></head><body>
+<h1 id="welcome-to-the-idf-back-end-code-challenge">Welcome to the IDF Back-End Code Challenge!</h1>
+<p>The main goal of this challenge is to get a sense of your coding style and choices.</p>
+<p>The code challenge does not involve any exotic or bleeding-edge technologies, tools, etc. and that's the point: We'd like to focus on your code style and not get distracted. </p>
+<p>On that note, we're also not looking for "rights and wrongs", and there are no "trick parts" in this challenge. We would merely like to get a more profound impression of how you write code.</p>
+<p>That also allows us to have a more fruitful and constructive discussion at the technical interview. We're not fans of white-boarding at interviews so we'd much rather have some concrete code to talk about. We think that makes the interview much more enjoyable and productive. </p>
+<h2 id="your-challengetask">Your challenge/task</h2>
+<p>Imagine you're our new full-stack developer ðŸ¦„ and you just got a feature request!</p>
+<p>You've just stepped into the middle of a conversation on a Github issue and here is what was said:</p>
+<p>Our Designer (feature requester) wrote the following:</p>
+<blockquote>
+<p>Hey Devs.</p>
+<p>We would like to improve the gamification of our course platform because we think it will help keep our users more engaged - and thus learn more. We want to make learning just as addictive as playing a computer game! I would like your help and have you implement a "course leaderboard" section on the existing courses which displays a list of users and their points in that particular course. I will elaborate a bit on this below. Remember that each course has a slug based on the pattern <code>/courses/{course-slug}</code>, e.g. <code>/courses/beginners-guide-to-user-experience</code>).</p>
+<p>This is an example of how the leaderboard section should look:</p>
+<p><img alt="image" src="https://user-images.githubusercontent.com/5278175/50387670-7e861400-0713-11e9-95fd-3f8c3316a070.png" /></p>
+<p>Specifications of the leaderboard of a given course:
+- display a maximum of 9 users on the leaderboard of a given course
+- always display the 3 users with the <strong>highest</strong> score of a given course
+- always display the 3 users with the <strong>lowest</strong> score of a given course
+- always show the currently logged-in user's position in a section sourrounded by 2 other course participants. 
+- if a user has the <strong>same</strong> amount of points as another participant, then the currently logged-in user should be displayed higher than the other one with the same score as him/her. In other words, his/her position on the leaderboard should be "rounded up" if he has the same score as others.
+- logged-in user should be bolded</p>
+</blockquote>
+<p>So, your goal now is to implement both front-end and back-end parts of this feature.</p>
+<h2 id="what-we-will-evaluate">What we will evaluate</h2>
+<p>There are no set-in-stone technical requirements for this feature. The only requirement that is noticable by our users and visitors is performance. </p>
+<p>You can do everything you want in order to implement this feature:
+ - Change the DB structure
+ - Move significant parts of the logic to the DB 
+ - Move significant parts of the logic to the back-end 
+ - Move significant parts of the logic to the front-end, or load data by AJAX (if so, please use Vanilla JS or Vue.js) 
+ - Move significant parts of the logic to ... Okay.. you get it... We don't want to limit your ideas :) </p>
+<p>We will be evaluating the following aspects:
+ - Your ability to design the overall project architecture and keep it consistent with your implementation (note: frequent atomic commits are welcome!).
+ - Your ability to write readable and reusable code with a clean API.
+ - Performance of your solution (this page is pretty popular and we don't want to overload our server)</p>
+<p>You are of course more than welcome to ask questions about this challenge in case you're in doubt about something or need more background information!</p>
+<h2 id="how-to-setup-working-environment">How to setup working environment</h2>
+<p>This project is a simple <a href="https://github.com/laravel/laravel">Laravel application</a>.</p>
+<p>In order to help you with initial setup we already added some basic code:
+ - Routes, controllers and views
+ - Migrations to create all required tables
+ - Factories to create all entities
+ - Database seeders to have enough information to display leaderboards</p>
+<h3 id="a-localvirtual-machine">A) Local/Virtual Machine</h3>
+<p>```sh</p>
+<h1 id="install-composer-dependencies">install composer dependencies</h1>
+<p>composer install</p>
+<h1 id="run-all-migrations-and-seed-db">Run all migrations and seed DB</h1>
+<p>php artisan migrate:fresh --seed
+```</p>
+<h3 id="b-docker">B) Docker</h3>
+<p>For the docker environment we prepared a special <code>.env</code> file example: <code>.env.docker.example</code>.
+In addition to that, we included a basic Docker Compose config.
+So, if you are already a docker user, you simply need to execute the following commands:</p>
+<p>```sh</p>
+<h1 id="install-composer-dependencies_1">install composer dependencies</h1>
+<p>docker run --rm --interactive --tty --volume $PWD:/app composer install</p>
+<h1 id="build-recreate-and-start-containers-for-a-service">Build, (re)create and start containers for a service.</h1>
+<p>docker-compose up</p>
+<h1 id="run-all-migrations-and-seed-the-db">Run all migrations and seed the DB</h1>
+<p>docker exec idf-php-fpm php artisan migrate:fresh --seed
+```</p>
+<p>If everything worked well, a project should be accessiable by <a href="http://localhost:8880">http://localhost:8880</a>.</p>
+<p>Got problems? Help us improve this code challenge by writing to us. We're happy to help :-) </p>
+<h3 id="after-installation-done">After installation done</h3>
+<p>Please log in at the <code>/login</code> page by using any auto-generated email address you can find in the DB.
+The password for all auto-generated users is <code>secret</code>.</p>
+<p>After successfull login you will be redirected to a page with a list of links to your course enrollments.
+Please click any of the links and you will be redirected to a page where you should implement your this challenge, i.e. the leaderboard.</p>
+<h2 id="how-to-submit-your-solution">How to submit your solution</h2>
+<p>Please submit your solution in a git repository.
+You can use services like GitHub or Bitbucket.
+Ideally, you could make an initial commit with the files of this code challenge and then build your solution upon that.</p>
+<p>You can submit your solution in 2 ways:
+ 1. Use <strong>public</strong> git repository and send us the link.
+ 2. Use <strong>private</strong> git repository and send us the link (if you don't want to create a public repository for personal reasons).
+ In this case, please provide read access for
+ the following user: <code>idf-bot</code> (valid for <a href="https://github.com/idf-bot">GitHub</a> and <a href="https://bitbucket.org/idf-bot/">Bitbucket</a>).</p>
+<p>Hint: Bitbucket allows you to create one private repository for free.</p>
+</body></html>
