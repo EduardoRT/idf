@@ -30,286 +30,165 @@
                         </p>
                         <div class="row">
                             <div class="col-md-6">
-                                <h4>You are ranked <b>4th</b> in {{ auth()->user()->country->name }}</h4>
+                                <h4>You are ranked <b>{{ $currentGlobalLeaderboardPosition }}</b> in {{ auth()->user()->country->name }}</h4>
                                 {{--Replace this stub markup by your code--}}
                                 <ul style="padding: 0px;">
+                                    @foreach($topGlobalLeaderboard as $position => $leaderboardItem)
                                     <li class="courseRanking__rankItem"
                                         style="display: flex; flex-direction: row; padding: 10px;">
                                         <div class="position"
                                              style="font-size: 28px; color: rgb(132, 132, 132); text-align: right; width: 80px; padding-right: 10px;">
-                                            1
+                                            {{ $position + 1 }}
                                         </div>
                                         <div class="info">
                                             <div style="font-size: 16px;">
-                                                Sandra Lidstream
+                                                @if ($leaderboardItem->user->id == Auth::id())
+                                                    <b>{{ $leaderboardItem->user->name }}</b>
+                                                @else
+                                                    {{ $leaderboardItem->user->name }}
+                                                @endif
                                             </div>
                                             <div class="score" style="font-size: 10px; color: rgb(132, 132, 132);">
-                                                205 PTS (+93)
+                                                {{ $leaderboardItem->total_score }} PTS
+                                                @if ((($userScore - $leaderboardItem->total_score) * -1) > 0)
+                                                    (+{{ ($userScore - $leaderboardItem->total_score) * -1 }})
+                                                @endif
                                             </div>
                                         </div>
                                     </li>
-                                    <li class="courseRanking__rankItem"
-                                        style="display: flex; flex-direction: row; padding: 10px;">
-                                        <div class="position"
-                                             style="font-size: 28px; color: rgb(132, 132, 132); text-align: right; width: 80px; padding-right: 10px;">
-                                            2
-                                        </div>
-                                        <div class="info">
-                                            <div style="font-size: 16px;">
-                                                Corvin Dalek
-                                            </div>
-                                            <div class="score" style="font-size: 10px; color: rgb(132, 132, 132);">
-                                                200 PTS (+88)
-                                            </div>
-                                        </div>
-                                    </li>
-                                    <li class="courseRanking__rankItem"
-                                        style="display: flex; flex-direction: row; padding: 10px;">
-                                        <div class="position"
-                                             style="font-size: 28px; color: rgb(132, 132, 132); text-align: right; width: 80px; padding-right: 10px;">
-                                            3
-                                        </div>
-                                        <div class="info">
-                                            <div style="font-size: 16px;">
-                                                Kumar Jubar
-                                            </div>
-                                            <div class="score" style="font-size: 10px; color: rgb(132, 132, 132);">
-                                                180 PTS (+68)
-                                            </div>
-                                        </div>
-                                    </li>
-                                    <li class="courseRanking__rankItem"
-                                        style="display: flex; flex-direction: row; padding: 10px;">
-                                        <div class="position"
-                                             style="font-size: 28px; color: rgb(132, 132, 132); text-align: right; width: 80px; padding-right: 10px;">
-                                            4
-                                        </div>
-                                        <div class="info">
-                                            <div style="font-size: 16px;"><b>Alfred Maroz</b></div>
-                                            <div class="score" style="font-size: 10px; color: rgb(132, 132, 132);">
-                                                112 PTS
-                                            </div>
-                                        </div>
-                                    </li>
-                                    <li class="courseRanking__rankItem"
-                                        style="display: flex; flex-direction: row; padding: 10px;">
-                                        <div class="position"
-                                             style="font-size: 28px; color: rgb(132, 132, 132); text-align: right; width: 80px; padding-right: 10px;">
-                                            5
-                                        </div>
-                                        <div class="info">
-                                            <div style="font-size: 16px;">
-                                                Arthur Rembo
-                                            </div>
-                                            <div class="score" style="font-size: 10px; color: rgb(132, 132, 132);">
-                                                95 PTS
-                                            </div>
-                                        </div>
-                                    </li>
+                                    @endforeach
                                     <hr>
+                                    @foreach($middleGlobalLeaderboard as $position => $leaderboardItem)
                                     <li class="courseRanking__rankItem"
                                         style="display: flex; flex-direction: row; padding: 10px;">
                                         <div class="position"
                                              style="font-size: 28px; color: rgb(132, 132, 132); text-align: right; width: 80px; padding-right: 10px;">
-                                            15
+                                            {{ $position + 1 }}
                                         </div>
                                         <div class="info">
                                             <div style="font-size: 16px;">
-                                                Colin Shpak
+                                                @if ($leaderboardItem->user->id == Auth::id())
+                                                    <b>{{ $leaderboardItem->user->name }}</b>
+                                                @else
+                                                    {{ $leaderboardItem->user->name }}
+                                                @endif
                                             </div>
                                             <div class="score" style="font-size: 10px; color: rgb(132, 132, 132);">
-                                                74 PTS
+                                                {{ $leaderboardItem->total_score }} PTS
+                                                @if ((($userScore - $leaderboardItem->total_score) * -1) > 0)
+                                                    (+{{ ($userScore - $leaderboardItem->total_score) * -1 }})
+                                                @endif
                                             </div>
                                         </div>
                                     </li>
+                                    @endforeach
                                     <hr>
+                                    @foreach($lastGlobalLeaderboard as $position => $leaderboardItem)
                                     <li class="courseRanking__rankItem"
                                         style="display: flex; flex-direction: row; padding: 10px;">
                                         <div class="position"
                                              style="font-size: 28px; color: rgb(132, 132, 132); text-align: right; width: 80px; padding-right: 10px;">
-                                            34
+                                            {{ $position + 1 }}
                                         </div>
                                         <div class="info">
                                             <div style="font-size: 16px;">
-                                                Gustaf Makinen
+                                                @if ($leaderboardItem->user->id == Auth::id())
+                                                    <b>{{ $leaderboardItem->user->name }}</b>
+                                                @else
+                                                    {{ $leaderboardItem->user->name }}
+                                                @endif
                                             </div>
                                             <div class="score" style="font-size: 10px; color: rgb(132, 132, 132);">
-                                                20 PTS
+                                                {{ $leaderboardItem->total_score }} PTS
+                                                @if ((($userScore - $leaderboardItem->total_score) * -1) > 0)
+                                                    (+{{ ($userScore - $leaderboardItem->total_score) * -1 }})
+                                                @endif
                                             </div>
                                         </div>
                                     </li>
-                                    <li class="courseRanking__rankItem"
-                                        style="display: flex; flex-direction: row; padding: 10px;">
-                                        <div class="position"
-                                             style="font-size: 28px; color: rgb(132, 132, 132); text-align: right; width: 80px; padding-right: 10px;">
-                                            35
-                                        </div>
-                                        <div class="info">
-                                            <div style="font-size: 16px;">
-                                                Selena Manesh
-                                            </div>
-                                            <div class="score" style="font-size: 10px; color: rgb(132, 132, 132);">
-                                                10 PTS
-                                            </div>
-                                        </div>
-                                    </li>
-                                    <li class="courseRanking__rankItem"
-                                        style="display: flex; flex-direction: row; padding: 10px;">
-                                        <div class="position"
-                                             style="font-size: 28px; color: rgb(132, 132, 132); text-align: right; width: 80px; padding-right: 10px;">
-                                            36
-                                        </div>
-                                        <div class="info">
-                                            <div style="font-size: 16px;">
-                                                Adam Morrison
-                                            </div>
-                                            <div class="score" style="font-size: 10px; color: rgb(132, 132, 132);">
-                                                3 PTS
-                                            </div>
-                                        </div>
-                                    </li>
+                                    @endforeach
+                                    <hr>
                                 </ul>
-
                             </div>
                             <div class="col-md-6">
-                                <h4>You are ranked <b>90th</b> Worldwide</h4>
+                                <h4>You are ranked <b>{{ $currentLeaderboardPosition }}</b> Worldwide</h4>
                                 {{--Replace this stub markup by your code--}}
                                 <ul style="padding: 0px;">
+                                    @foreach($topLeaderboard as $position => $leaderboardItem)
                                     <li class="courseRanking__rankItem"
                                         style="display: flex; flex-direction: row; padding: 10px;">
                                         <div class="position"
                                              style="font-size: 28px; color: rgb(132, 132, 132); text-align: right; width: 80px; padding-right: 10px;">
-                                            1
+                                            {{ $position + 1 }}
                                         </div>
                                         <div class="info">
                                             <div style="font-size: 16px;">
-                                                María Ayelén Malaquín
+                                                @if ($leaderboardItem->user->id == Auth::id())
+                                                    <b>{{ $leaderboardItem->user->name }}</b>
+                                                @else
+                                                    {{ $leaderboardItem->user->name }}
+                                                @endif
                                             </div>
                                             <div class="score" style="font-size: 10px; color: rgb(132, 132, 132);">
-                                                224 PTS (+112)
+                                                {{ $leaderboardItem->total_score }} PTS
+                                                @if ((($userScore - $leaderboardItem->total_score) * -1) > 0)
+                                                    (+{{ ($userScore - $leaderboardItem->total_score) * -1 }})
+                                                @endif
                                             </div>
                                         </div>
                                     </li>
-                                    <li class="courseRanking__rankItem"
-                                        style="display: flex; flex-direction: row; padding: 10px;">
-                                        <div class="position"
-                                             style="font-size: 28px; color: rgb(132, 132, 132); text-align: right; width: 80px; padding-right: 10px;">
-                                            1
-                                        </div>
-                                        <div class="info">
-                                            <div style="font-size: 16px;">
-                                                Ulrike Bruckenberger
-                                            </div>
-                                            <div class="score" style="font-size: 10px; color: rgb(132, 132, 132);">
-                                                224 PTS (+112)
-                                            </div>
-                                        </div>
-                                    </li>
-                                    <li class="courseRanking__rankItem"
-                                        style="display: flex; flex-direction: row; padding: 10px;">
-                                        <div class="position"
-                                             style="font-size: 28px; color: rgb(132, 132, 132); text-align: right; width: 80px; padding-right: 10px;">
-                                            3
-                                        </div>
-                                        <div class="info">
-                                            <div style="font-size: 16px;">
-                                                Kumar Jubar
-                                            </div>
-                                            <div class="score" style="font-size: 10px; color: rgb(132, 132, 132);">
-                                                223 PTS (+111)
-                                            </div>
-                                        </div>
-                                    </li>
+                                    @endforeach
                                     <hr>
+                                    @foreach($middleLeaderboard as $position => $leaderboardItem)
                                     <li class="courseRanking__rankItem"
                                         style="display: flex; flex-direction: row; padding: 10px;">
                                         <div class="position"
                                              style="font-size: 28px; color: rgb(132, 132, 132); text-align: right; width: 80px; padding-right: 10px;">
-                                            89
+                                            {{ $position + 1 }}
                                         </div>
                                         <div class="info">
                                             <div style="font-size: 16px;">
-                                                Roberto Muñoz
+                                                @if ($leaderboardItem->user->id == Auth::id())
+                                                    <b>{{ $leaderboardItem->user->name }}</b>
+                                                @else
+                                                    {{ $leaderboardItem->user->name }}
+                                                @endif
                                             </div>
                                             <div class="score" style="font-size: 10px; color: rgb(132, 132, 132);">
-                                                113 PTS (+1)
+                                                {{ $leaderboardItem->total_score }} PTS
+                                                @if ((($userScore - $leaderboardItem->total_score) * -1) > 0)
+                                                    (+{{ ($userScore - $leaderboardItem->total_score) * -1 }})
+                                                @endif
                                             </div>
                                         </div>
                                     </li>
-                                    <li class="courseRanking__rankItem"
-                                        style="display: flex; flex-direction: row; padding: 10px;">
-                                        <div class="position"
-                                             style="font-size: 28px; color: rgb(132, 132, 132); text-align: right; width: 80px; padding-right: 10px;">
-                                            90
-                                        </div>
-                                        <div class="info">
-                                            <div style="font-size: 16px;"><b>Alfred Maroz</b></div>
-                                            <div class="score" style="font-size: 10px; color: rgb(132, 132, 132);">
-                                                112 PTS
-                                            </div>
-                                        </div>
-                                    </li>
-                                    <li class="courseRanking__rankItem"
-                                        style="display: flex; flex-direction: row; padding: 10px;">
-                                        <div class="position"
-                                             style="font-size: 28px; color: rgb(132, 132, 132); text-align: right; width: 80px; padding-right: 10px;">
-                                            91
-                                        </div>
-                                        <div class="info">
-                                            <div style="font-size: 16px;">
-                                                Monica Gerculesku
-                                            </div>
-                                            <div class="score" style="font-size: 10px; color: rgb(132, 132, 132);">
-                                                110 PTS
-                                            </div>
-                                        </div>
-                                    </li>
+                                    @endforeach
                                     <hr>
+                                    @foreach($lastLeaderboard as $position => $leaderboardItem)
                                     <li class="courseRanking__rankItem"
                                         style="display: flex; flex-direction: row; padding: 10px;">
                                         <div class="position"
                                              style="font-size: 28px; color: rgb(132, 132, 132); text-align: right; width: 80px; padding-right: 10px;">
-                                            343
+                                            {{ $position + 1 }}
                                         </div>
                                         <div class="info">
                                             <div style="font-size: 16px;">
-                                                Nileesh Gopu
+                                                @if ($leaderboardItem->user->id == Auth::id())
+                                                    <b>{{ $leaderboardItem->user->name }}</b>
+                                                @else
+                                                    {{ $leaderboardItem->user->name }}
+                                                @endif
                                             </div>
                                             <div class="score" style="font-size: 10px; color: rgb(132, 132, 132);">
-                                                3 PTS
+                                                {{ $leaderboardItem->total_score }} PTS
+                                                @if ((($userScore - $leaderboardItem->total_score) * -1) > 0)
+                                                    (+{{ ($userScore - $leaderboardItem->total_score) * -1 }})
+                                                @endif
                                             </div>
                                         </div>
                                     </li>
-                                    <li class="courseRanking__rankItem"
-                                        style="display: flex; flex-direction: row; padding: 10px;">
-                                        <div class="position"
-                                             style="font-size: 28px; color: rgb(132, 132, 132); text-align: right; width: 80px; padding-right: 10px;">
-                                            343
-                                        </div>
-                                        <div class="info">
-                                            <div style="font-size: 16px;">
-                                                Adam Morrison
-                                            </div>
-                                            <div class="score" style="font-size: 10px; color: rgb(132, 132, 132);">
-                                                3 PTS
-                                            </div>
-                                        </div>
-                                    </li>
-                                    <li class="courseRanking__rankItem"
-                                        style="display: flex; flex-direction: row; padding: 10px;">
-                                        <div class="position"
-                                             style="font-size: 28px; color: rgb(132, 132, 132); text-align: right; width: 80px; padding-right: 10px;">
-                                            346
-                                        </div>
-                                        <div class="info">
-                                            <div style="font-size: 16px;">
-                                                Ezeph Malcom
-                                            </div>
-                                            <div class="score" style="font-size: 10px; color: rgb(132, 132, 132);">
-                                                0 PTS
-                                            </div>
-                                        </div>
-                                    </li>
+                                    @endforeach
+                                    <hr>
                                 </ul>
                             </div>
                         </div>
