@@ -39,4 +39,9 @@ class User extends Authenticatable
     {
         return $this->hasMany(CourseEnrollment::class);
     }
+
+    public function leaderboards(): HasMany
+    {
+        return $this->hasMany(Leaderboard::class);
+    }
 }
