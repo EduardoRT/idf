@@ -11,9 +11,9 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 class Leaderboard extends Model
 {
     protected $fillable = [
-        'user_id',
         'course_id',
-        'score'
+        'score',
+        'user_id',
     ];
 
     public function getScoreAttribute($value): int
