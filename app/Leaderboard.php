@@ -38,7 +38,6 @@ class Leaderboard extends Model
 
     public static function getCourseLeaderboard(Course $course, String $scope = "course"): Array
     {
-
         if ("course" == $scope) {
             $leaderboard = Leaderboard::where('course_id', $course->id)
                 ->orderBy('total_score', 'DESC')
