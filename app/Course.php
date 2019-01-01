@@ -24,4 +24,9 @@ class Course extends Model
     {
         return $this->hasManyThrough(Quiz::class, Lesson::class)->orderBy('created_at');
     }
+
+    public function leaderboards(): HasMany
+    {
+        return $this->hasMany(Leaderboard::class);
+    }
 }
