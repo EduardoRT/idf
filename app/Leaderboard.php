@@ -12,7 +12,7 @@ class Leaderboard extends Model
 {
     protected $fillable = [
         'course_id',
-        'score',
+        'total_score',
         'user_id',
     ];
 
