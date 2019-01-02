@@ -57,14 +57,45 @@ class Leaderboard extends Model
             }
         }
 
+        $leaderboard = self::computeLeaderboardPlaces($leaderboard);
+        $leaderboard = self::sortUserPosition($leaderboard);
+
+        // Get the three sections for the column, top three, last three and wherever the user is.
+        $topLeaderboard = $leaderboard->slice(0,3);
+        $lastLeaderboard = $leaderboard->slice(-3,3);
+        $leaderboardIndex = $leaderboard->where('user_id', auth()->user()->id)->keys()->first();
+
+
+        // Determine if the current user is not on the top or bottom and if it's at the top or bottom
+        // Then grab the middle section of the leaderboard and show that instead.
+        if ($leaderboardIndex < 3 || $leaderboardIndex > (count($leaderboard) - 4)) {
+            $currentLeaderboard = $leaderboard->slice(ceil(count($leaderboard) / 2), 3);
+        } else {
+            $currentLeaderboard = $leaderboard->slice($leaderboardIndex - 1, 3);
+        }
+
+        // Pluck the actual place of the current user and change it to its ordinal form.
+        $currentLeaderboardPosition = $leaderboard->where('user_id', auth()->user()->id)->pluck('place')->first();
+        $numberFormatter = new \NumberFormatter('en_US', \NumberFormatter::ORDINAL);
+        $currentLeaderboardPosition = $numberFormatter->format($currentLeaderboardPosition);
+
+        $shouldRenderLeaderboard = true;
+        if (count($leaderboard) < 12) {
+            $shouldRenderLeaderboard = false;
+        }
+
+        return [$topLeaderboard, $currentLeaderboard, $lastLeaderboard, $currentLeaderboardPosition, $shouldRenderLeaderboard];
+    }
+
+    // Get the actual places (n people can be 1st or 4th) and add it to the collection
+    private static function computeLeaderboardPlaces(Collection $leaderboard): Collection
+    {
         $place = 1;
         $lastScore = $leaderboard->first()->total_score ?? 0;
         $userScore = 0;
-        $leaderboardId = 0;
         foreach($leaderboard as $id => $entry) {
             if ($entry->user_id == auth()->user()->id) {
                 $userScore = $entry->total_score;
-                $leaderboardId = $id;
             }
 
             if ($lastScore == $entry->total_score) {
@@ -77,39 +108,25 @@ class Leaderboard extends Model
             $lastScore = $entry->total_score;
         }
 
-        $leaderboard = self::sortUserPosition($leaderboard, $userScore);
-        $topLeaderboard = $leaderboard->slice(0,3);
-        $lastLeaderboard = $leaderboard->slice(-3,3);
-        $currentLeaderboardPosition = $leaderboard->where('user_id', auth()->user()->id)->pluck('place')->first();
-        $leaderboardIndex = $leaderboard->where('user_id', auth()->user()->id)->keys()->first();
-
-        // Determine if the current user is not on the top or bottom
-        if ($leaderboardIndex < 3 || $leaderboardIndex > (count($leaderboard) - 4)) {
-            $currentLeaderboard = $leaderboard->slice(ceil(count($leaderboard) / 2), 3);
-        } else {
-            $currentLeaderboard = $leaderboard->slice($leaderboardIndex - 1, 3);
-        }
-
-        $numberFormatter = new \NumberFormatter('en_US', \NumberFormatter::ORDINAL);
-        $currentLeaderboardPosition = $numberFormatter->format($currentLeaderboardPosition);
-
-        $shouldRenderLeaderboard = true;
-        if (count($leaderboard) < 12) {
-            $shouldRenderLeaderboard = false;
-        }
-
-        return [$topLeaderboard, $currentLeaderboard, $lastLeaderboard, $currentLeaderboardPosition, $shouldRenderLeaderboard];
+        return $leaderboard;
     }
 
     // Weight the current user's score and sort it again so that his/her score "floats" to the top
-    private static function sortUserPosition(Collection $leaderboard, int $userScore): Collection
+    private static function sortUserPosition(Collection $leaderboard): Collection
     {
+        $userScore = 0;
+        foreach($leaderboard as $entry) {
+            if ($entry->user_id == auth()->user()->id) {
+                $userScore = $entry->total_score;
+            }
+        }
+
         if (count($leaderboard->where('total_score', $userScore)) > 1) {
             $leaderboard->where('user_id', auth()->user()->id)->first()->total_score += 0.1;
             $leaderboard = $leaderboard->sortByDesc('total_score');
             $leaderboard->where('user_id', auth()->user()->id)->first()->total_score -= 0.1;
         }
 
-        return $leaderboard;
+        return $leaderboard->values();
     }
 }
