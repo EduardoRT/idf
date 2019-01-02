@@ -49,12 +49,21 @@ class Leaderboard extends Model
                 ->get();
 
             $userCountry = optional(\Auth::user())->country_id ?? null;
+        }
 
-            if (isset($userCountry)) {
-                $leaderboard = $leaderboard->filter(function($entry) use ($userCountry) {
-                    return $entry->user->country->id == $userCountry;
-                })->values();
-            }
+        // If the user doesn't have a leaderboard entry then create one and append it
+        if (empty($leaderboard->where('user_id', auth()->user()->id)->first())) {
+            $newLeaderboard = new Leaderboard();
+            $newLeaderboard->user_id = auth()->user()->id;
+            $newLeaderboard->total_score = 0;
+            $newLeaderboard->course_id = $course->id;
+            $leaderboard->push($newLeaderboard);
+        }
+
+        if (isset($userCountry)) {
+            $leaderboard = $leaderboard->filter(function($entry) use ($userCountry) {
+                return $entry->user->country->id == $userCountry;
+            })->values();
         }
 
         $leaderboard = self::computeLeaderboardPlaces($leaderboard);
