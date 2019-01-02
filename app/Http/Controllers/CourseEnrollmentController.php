@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Course;
 use App\CourseEnrollment;
+use Illuminate\Support\Facades\Cache;
 use App\Leaderboard;
 use Illuminate\Contracts\Support\Renderable;
 
@@ -14,20 +15,25 @@ class CourseEnrollmentController extends Controller
         $course = Course::where('slug', $slug)->first() ?? abort(404, 'Unknown course');
 
         [$topLeaderboard, $middleLeaderboard,
-        $lastLeaderboard, $currentLeaderboardPosition, $shouldRenderLeaderboard] = Leaderboard::getCourseLeaderboard($course);
+        $lastLeaderboard, $currentLeaderboardPosition, $shouldRenderLeaderboard] = Cache::remember('course.leaderboard.' . auth()->user()->id . 'global', 120, function() use ($course) {
+            return Leaderboard::getCourseLeaderboard($course);
+        });
 
         [$topGlobalLeaderboard, $middleGlobalLeaderboard,
-        $lastGlobalLeaderboard, $currentGlobalLeaderboardPosition, $shouldRenderGlobalLeaderboard] = Leaderboard::getCourseLeaderboard($course, 'country');
+        $lastGlobalLeaderboard, $currentGlobalLeaderboardPosition, $shouldRenderGlobalLeaderboard] = Cache::remember('course.leaderboard.'.auth()->user()->id.'country', 120, function() use ($course) {
+            return Leaderboard::getCourseLeaderboard($course, 'country');
+        });
 
         $enrollment = CourseEnrollment::where('course_id', $course->id)
             ->where('user_id', auth()->id())
             ->first() ?? abort(404, 'You are not enrolled to this course');
 
-        $userScore = Leaderboard::where('course_id', $course->id)
-            ->where('user_id', auth()->id())
-            ->get()
-            ->first();
-
+        $userScore = Cache::remember('course.leaderboard'.auth()->user()->id.'score', 120, function() use ($course) {
+            return  Leaderboard::where('course_id', $course->id)
+                ->where('user_id', auth()->id())
+                ->get()
+                ->first();
+        });
 
         if (isset($userScore)) {
             $userScore = $userScore->total_score;
