@@ -15,11 +15,26 @@ class LeaderboardsSeeder extends Seeder
     public function run()
     {
         $courses = Course::all();
+        $user = User::first();
 
         foreach($courses as $course) {
-            factory(Leaderboard::class, rand(10, 150))->create([
+            factory(Leaderboard::class, 100)->create([
                 'course_id' => $course->id,
             ]);
+
+            factory(Leaderboard::class)->create([
+                'course_id' => $course->id,
+                'user_id' => $user->id,
+            ]);
+
+            for ($i = 0; $i < 30; $i += 1) {
+                factory(Leaderboard::class)->create([
+                    'course_id' => $course->id,
+                    'user_id' => factory(User::class)->create([
+                        'country_id' => $user->country_id,
+                    ]),
+                ]);
+            }
         }
     }
 }
