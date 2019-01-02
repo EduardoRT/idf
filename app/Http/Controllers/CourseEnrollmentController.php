@@ -14,10 +14,10 @@ class CourseEnrollmentController extends Controller
         $course = Course::where('slug', $slug)->first() ?? abort(404, 'Unknown course');
 
         [$topLeaderboard, $middleLeaderboard,
-        $lastLeaderboard, $currentLeaderboardPosition] = Leaderboard::getCourseLeaderboard($course);
+        $lastLeaderboard, $currentLeaderboardPosition, $shouldRenderLeaderboard] = Leaderboard::getCourseLeaderboard($course);
 
         [$topGlobalLeaderboard, $middleGlobalLeaderboard,
-        $lastGlobalLeaderboard, $currentGlobalLeaderboardPosition] = Leaderboard::getCourseLeaderboard($course, "global");
+        $lastGlobalLeaderboard, $currentGlobalLeaderboardPosition, $shouldRenderGlobalLeaderboard] = Leaderboard::getCourseLeaderboard($course, 'country');
 
         $enrollment = CourseEnrollment::where('course_id', $course->id)
             ->where('user_id', auth()->id())
@@ -26,8 +26,14 @@ class CourseEnrollmentController extends Controller
         $userScore = Leaderboard::where('course_id', $course->id)
             ->where('user_id', auth()->id())
             ->get()
-            ->first()
-            ->total_score;
+            ->first();
+
+
+        if (isset($userScore)) {
+            $userScore = $userScore->total_score;
+        } else {
+            $userScore = 0;
+        }
 
         return view('courseEnrollment', [
             'enrollment' => $enrollment,
@@ -40,6 +46,8 @@ class CourseEnrollmentController extends Controller
             'middleGlobalLeaderboard' => $middleGlobalLeaderboard,
             'lastGlobalLeaderboard' => $lastGlobalLeaderboard,
             'currentGlobalLeaderboardPosition' => $currentGlobalLeaderboardPosition,
+            'shouldRenderLeaderboard' => $shouldRenderLeaderboard,
+            'shouldRenderGlobalLeaderboard' => $shouldRenderGlobalLeaderboard,
         ]);
     }
 }

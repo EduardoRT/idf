@@ -26,6 +26,8 @@
                     'currentLeaderboardPosition' => $currentLeaderboardPosition,
                     'currentGlobalLeaderboardPosition' => $currentGlobalLeaderboardPosition,
                     'userScore' => $userScore,
+                    'shouldRenderLeaderboard' => $shouldRenderLeaderboard,
+                    'shouldRenderGlobalLeaderboard' => $shouldRenderGlobalLeaderboard,
                     ])
                 @endcomponent
             </div>

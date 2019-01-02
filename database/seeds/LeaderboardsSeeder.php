@@ -2,6 +2,7 @@
 
 use App\Leaderboard;
 use App\Course;
+use App\User;
 use Illuminate\Database\Seeder;
 
 class LeaderboardsSeeder extends Seeder
