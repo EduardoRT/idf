@@ -12,6 +12,8 @@ use Tests\TestCase;
 
 class LeaderboardTest extends TestCase
 {
+    use RefreshDatabase;
+
     public function testItCanBeInstantiated(): void
     {
         $this->assertInstanceOf(Leaderboard::class, factory(Leaderboard::class)->make());
@@ -26,7 +28,7 @@ class LeaderboardTest extends TestCase
     {
         $fillable = [
             'course_id',
-            'score',
+            'total_score',
             'user_id',
         ];
 
