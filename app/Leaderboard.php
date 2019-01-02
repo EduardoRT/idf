@@ -11,9 +11,9 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 class Leaderboard extends Model
 {
     protected $fillable = [
-        'user_id',
         'course_id',
-        'score'
+        'total_score',
+        'user_id',
     ];
 
     public function getScoreAttribute($value): int
@@ -38,7 +38,6 @@ class Leaderboard extends Model
 
     public static function getCourseLeaderboard(Course $course, String $scope = "course"): Array
     {
-
         if ("course" == $scope) {
             $leaderboard = Leaderboard::where('course_id', $course->id)
                 ->orderBy('total_score', 'DESC')
